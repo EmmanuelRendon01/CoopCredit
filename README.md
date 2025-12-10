@@ -6,6 +6,7 @@
 ![Docker](https://img.shields.io/badge/Docker-Ready-blue)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
+
 Comprehensive credit application management and automated evaluation system for CoopCredit, implemented with hexagonal architecture, microservices, and robust JWT security.
 
 ---
@@ -229,9 +230,9 @@ This guide covers:
 
 | Username | Password | Role |
 |----------|----------|------|
-| `admin` | `admin123` | ADMIN |
-| `analyst` | `analyst123` | ANALYST |
-| `affiliate1` | `affiliate123` | AFFILIATE |
+| `admin` | `Admin123!` | ADMIN |
+| `analyst` | `Analyst123!` | ANALYST |
+| `anam` | `Affiliate123!` | AFFILIATE |
 
 ---
 
@@ -953,9 +954,11 @@ This project is private and confidential. All rights reserved.
 
 ## 👨‍💻 Author
 
-**CoopCredit Development Team**
+**Emmanuel Rendon Goez**
 
-For technical support and inquiries, contact the development team.
+For technical support and inquiries, contact the Emmanuel.
+
+## Github: https://github.com/EmmanuelRendon01/CoopCredit
 
 ---
 
