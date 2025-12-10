@@ -1,0 +1,573 @@
+{
+	"info": {
+		"_postman_id": "coopcredit-api-collection",
+		"name": "CoopCredit - Credit Application API",
+		"description": "Complete API collection for CoopCredit credit application system.\n\n## Features\n- Automatic JWT token handling\n- Environment variables for local/docker\n- Pre-configured test scripts\n- Complete CRUD operations\n- Credit evaluation flow\n\n## Quick Start\n1. Import this collection\n2. Import environment file (local or docker)\n3. Run \"Register User\" to create account\n4. Token is automatically saved and used\n5. Test all endpoints!\n\n## Endpoints\n- Authentication (Register, Login)\n- Affiliates (CRUD)\n- Credit Applications (Create, Evaluate, Query)\n\n## Author\nCoopCredit Development Team",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register Affiliate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Save JWT token to environment",
+									"if (pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set('jwt_token', response.token);",
+									"    pm.environment.set('username', response.username);",
+									"    console.log('✅ User registered successfully');",
+									"    console.log('Token saved to environment');",
+									"}",
+									"",
+									"// Validate response",
+									"pm.test('Status code is 201', function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test('Response contains token', function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property('token');",
+									"    pm.expect(response).to.have.property('username');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"documentType\": \"CC\",\n  \"documentNumber\": \"1017654321\",\n  \"firstName\": \"Juan\",\n  \"lastName\": \"Pérez\",\n  \"email\": \"juan.perez@example.com\",\n  \"phone\": \"3001234567\",\n  \"salary\": 5000000,\n  \"username\": \"juanperez\",\n  \"password\": \"SecurePass123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						},
+						"description": "Register a new affiliate and automatically save JWT token.\n\n**Default Role:** ROLE_AFILIADO\n\n**Validations:**\n- Document number must be unique\n- Email must be unique and valid\n- Salary must be greater than 0"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Save JWT token to environment",
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set('jwt_token', response.token);",
+									"    pm.environment.set('username', response.username);",
+									"    console.log('✅ Login successful');",
+									"    console.log('Token saved to environment');",
+									"}",
+									"",
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response contains token', function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property('token');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"juanperez\",\n  \"password\": \"SecurePass123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Authenticate user and get JWT token.\n\n**Token Validity:** 24 hours\n\n**Auto-saves token** to environment for subsequent requests."
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication endpoints for user registration and login.\n\nAll endpoints automatically save JWT token to environment."
+		},
+		{
+			"name": "Affiliates",
+			"item": [
+				{
+					"name": "Get Affiliate by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has affiliate data', function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property('id');",
+									"    pm.expect(response).to.have.property('firstName');",
+									"    pm.expect(response).to.have.property('email');",
+									"    pm.expect(response).to.have.property('monthsAsAffiliate');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/affiliates/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"affiliates",
+								"1"
+							]
+						},
+						"description": "Get detailed information about a specific affiliate.\n\n**Roles:** AFFILIATE, ANALYST, ADMIN\n\n**Response includes:**\n- Basic information\n- Calculated months as affiliate\n- Total credit applications count"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Affiliates",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response is an array', function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/affiliates",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"affiliates"
+							]
+						},
+						"description": "Get list of all affiliates in the system.\n\n**Roles:** ANALYST, ADMIN only\n\n**Note:** In production, this should be paginated."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Affiliate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Affiliate updated successfully', function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property('id');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Juan Carlos\",\n  \"lastName\": \"Pérez García\",\n  \"email\": \"juancarlos.perez@example.com\",\n  \"phone\": \"3009876543\",\n  \"salary\": 6000000,\n  \"status\": \"ACTIVE\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/affiliates/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"affiliates",
+								"1"
+							]
+						},
+						"description": "Update affiliate information.\n\n**Roles:** ANALYST, ADMIN only\n\n**Editable fields:**\n- firstName, lastName\n- email (must remain unique)\n- phone\n- salary (must be > 0)\n- status (ACTIVE/INACTIVE/SUSPENDED)\n\n**Non-editable:**\n- Document number (immutable)\n- Affiliation date"
+					},
+					"response": []
+				}
+			],
+			"description": "CRUD operations for affiliate management.\n\n**Create:** Use Register endpoint\n**Read:** Get by ID or Get All\n**Update:** PUT endpoint\n**Delete:** Not implemented (use status instead)"
+		},
+		{
+			"name": "Credit Applications",
+			"item": [
+				{
+					"name": "Create Credit Application",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 201', function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test('Application created with PENDING status', function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property('id');",
+									"    pm.expect(response.status).to.equal('PENDING');",
+									"});",
+									"",
+									"// Save application ID for evaluation",
+									"if (pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set('application_id', response.id);",
+									"    console.log('Application ID saved:', response.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"requestedAmount\": 10000000,\n  \"purpose\": \"Compra de vivienda\",\n  \"monthlyIncome\": 5000000,\n  \"requestedTermMonths\": 120\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/credit-applications/affiliates/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"credit-applications",
+								"affiliates",
+								"1"
+							]
+						},
+						"description": "Create a new credit application for an affiliate.\n\n**Roles:** AFFILIATE, ANALYST\n\n**Business Rules Validated:**\n- Affiliate must be ACTIVE\n- Minimum tenure (3 months default)\n- Debt ratio limits (40% default)\n- Maximum amount based on salary\n\n**Initial Status:** PENDING"
+					},
+					"response": []
+				},
+				{
+					"name": "Evaluate Credit Application",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Application evaluated with decision', function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.status).to.be.oneOf(['APPROVED', 'REJECTED']);",
+									"    pm.expect(response).to.have.property('riskEvaluation');",
+									"});",
+									"",
+									"pm.test('Risk evaluation has score', function () {",
+									"    const response = pm.response.json();",
+									"    if (response.riskEvaluation) {",
+									"        pm.expect(response.riskEvaluation).to.have.property('score');",
+									"        pm.expect(response.riskEvaluation).to.have.property('riskLevel');",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/credit-applications/{{application_id}}/evaluate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"credit-applications",
+								"{{application_id}}",
+								"evaluate"
+							]
+						},
+						"description": "Evaluate a PENDING credit application.\n\n**Roles:** ANALYST only\n\n**Process:**\n1. Calls risk-central-service for score\n2. Applies business policies\n3. Updates status to APPROVED/REJECTED\n4. Creates RiskEvaluation record\n\n**Transactional:** All-or-nothing operation"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Applications by Affiliate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response is an array', function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/credit-applications/affiliates/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"credit-applications",
+								"affiliates",
+								"1"
+							]
+						},
+						"description": "Get all credit applications for a specific affiliate.\n\n**Roles:** AFFILIATE, ANALYST\n\n**Includes:**\n- Application details\n- Risk evaluation (if available)\n- Status history"
+					},
+					"response": []
+				}
+			],
+			"description": "Credit application lifecycle management.\n\n**Flow:**\n1. Create application (PENDING)\n2. Evaluate application (ANALYST)\n3. Status updates to APPROVED/REJECTED"
+		},
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "Actuator Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/actuator/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"actuator",
+								"health"
+							]
+						},
+						"description": "Check application health status.\n\n**Public endpoint** - No authentication required"
+					},
+					"response": []
+				},
+				{
+					"name": "Actuator Metrics",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/actuator/metrics",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"actuator",
+								"metrics"
+							]
+						},
+						"description": "Get application metrics.\n\n**Roles:** ADMIN only"
+					},
+					"response": []
+				}
+			],
+			"description": "Spring Boot Actuator endpoints for monitoring."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Global pre-request script",
+					"// Automatically adds JWT token to requests if available",
+					"",
+					"const token = pm.environment.get('jwt_token');",
+					"if (token) {",
+					"    console.log('🔑 JWT token found in environment');",
+					"} else {",
+					"    console.log('⚠️ No JWT token - use Register or Login first');",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Global test script",
+					"// Logs response time and validates common patterns",
+					"",
+					"console.log('⏱️ Response time:', pm.response.responseTime, 'ms');",
+					"",
+					"// Check for common error responses",
+					"if (pm.response.code >= 400) {",
+					"    console.log('❌ Error response:', pm.response.code);",
+					"    try {",
+					"        const error = pm.response.json();",
+					"        console.log('Error details:', error);",
+					"    } catch (e) {",
+					"        console.log('Could not parse error response');",
+					"    }",
+					"}"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}

@@ -82,7 +82,7 @@ Thumbs.db
 **/node_modules/
 **/dist/
 **/.next/
-**/out/
+# **/out/  # Commented to allow hexagonal architecture 'out' adapters
 **/.nuxt/
 **/.cache/
 

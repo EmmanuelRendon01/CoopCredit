@@ -1,0 +1,23 @@
+package com.coopcredit.creditapplication.infrastructure.exception;
+
+/**
+ * Custom exception for business rule violations.
+ */
+public class BusinessException extends RuntimeException {
+    
+    private final String code;
+
+    public BusinessException(String message) {
+        super(message);
+        this.code = "BUSINESS_RULE_VIOLATION";
+    }
+
+    public BusinessException(String code, String message) {
+        super(message);
+        this.code = code;
+    }
+
+    public String getCode() {
+        return code;
+    }
+}

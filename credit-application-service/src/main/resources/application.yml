@@ -1,0 +1,100 @@
+spring:
+  application:
+    name: credit-application-service
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/coopcredit
+    username: coopcredit_user
+    password: coopcredit_pass
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      auto-commit: false
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        # Batch processing optimizations
+        default_batch_fetch_size: 10
+        jdbc:
+          batch_size: 20
+          fetch_size: 50
+        order_inserts: true
+        order_updates: true
+        # Second level cache (disabled for now, can be enabled with Redis later)
+        cache:
+          use_second_level_cache: false
+          use_query_cache: false
+        # Query optimization
+        query:
+          in_clause_parameter_padding: true
+        # Connection pool optimizations
+        connection:
+          provider_disables_autocommit: true
+        # Statistics for monitoring (disable in production)
+        generate_statistics: false
+    open-in-view: false
+  
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: on_param
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,info,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# SpringDoc OpenAPI Configuration
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    tags-sorter: alpha
+    operations-sorter: method
+    display-request-duration: true
+    doc-expansion: none
+  show-actuator: true
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:MySecretKeyForCoopCreditJWT2024ThisIsAVeryLongSecretKey}
+  expiration: 86400000 # 24 hours in milliseconds
+
+# Risk Central Service
+risk-central:
+  url: http://localhost:8081
+  timeout: 5000
+
+# Business Rules
+business:
+  credit:
+    min-affiliate-months: 3
+    max-debt-ratio: 0.40
+    max-amount-multiplier: 10
