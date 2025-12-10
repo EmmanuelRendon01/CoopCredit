@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: coopcredit-db
+    environment:
+      POSTGRES_DB: coopcredit
+      POSTGRES_USER: coopcredit_user
+      POSTGRES_PASSWORD: coopcredit_pass
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U coopcredit_user -d coopcredit"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - coopcredit-network
+
+  # Risk Central Service
+  risk-central-service:
+    build:
+      context: ./risk-central-service
+      dockerfile: Dockerfile
+    container_name: risk-central-service
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/coopcredit
+      SPRING_DATASOURCE_USERNAME: coopcredit_user
+      SPRING_DATASOURCE_PASSWORD: coopcredit_pass
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8081/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - coopcredit-network
+
+  # Credit Application Service
+  credit-application-service:
+    build:
+      context: ./credit-application-service
+      dockerfile: Dockerfile
+    container_name: credit-application-service
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/coopcredit
+      SPRING_DATASOURCE_USERNAME: coopcredit_user
+      SPRING_DATASOURCE_PASSWORD: coopcredit_pass
+      RISK_SERVICE_URL: http://risk-central-service:8081
+      JWT_SECRET: CoopCreditSecretKeyForJWT2024MustBeLongEnoughForHS256Algorithm
+      JWT_EXPIRATION: 86400000
+    depends_on:
+      postgres:
+        condition: service_healthy
+      risk-central-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    networks:
+      - coopcredit-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  coopcredit-network:
+    driver: bridge
