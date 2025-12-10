@@ -2,9 +2,16 @@
 # CoopCredit - Microservices Project
 # ==================================
 
-# Documentation (except README)
+# Documentation (except README and docs/)
 *.md
-!README.md
+!README*.md
+!docs/**/*.md
+!DEPLOYMENT_GUIDE.md
+!DOCKER-COMMANDS.md
+!GUIA-DE-PRUEBAS.md
+!FASE-*.md
+!STEP-*.md
+!postman/*.md
 
 # IDE
 .idea/
