@@ -1,4 +1,4 @@
-# CoopCredit - Sistema de Gestión de Créditos
+# CoopCredit - Credit Management System
 
 ![Java](https://img.shields.io/badge/Java-17-orange)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.0-green)
@@ -6,41 +6,41 @@
 ![Docker](https://img.shields.io/badge/Docker-Ready-blue)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
-Sistema integral de gestión y evaluación automática de solicitudes de crédito para CoopCredit, implementado con arquitectura hexagonal, microservicios y seguridad robusta con JWT.
+Comprehensive credit application management and automated evaluation system for CoopCredit, implemented with hexagonal architecture, microservices, and robust JWT security.
 
 ---
 
-## 📋 Tabla de Contenidos
+## 📋 Table of Contents
 
-- [Descripción](#descripción)
-- [Arquitectura](#arquitectura)
-- [Tecnologías](#tecnologías)
-- [Requisitos Previos](#requisitos-previos)
-- [Instalación y Ejecución](#instalación-y-ejecución)
-- [Endpoints API](#endpoints-api)
-- [Roles y Permisos](#roles-y-permisos)
-- [Métricas y Observabilidad](#métricas-y-observabilidad)
+- [Description](#description)
+- [Architecture](#architecture)
+- [Technologies](#technologies)
+- [Prerequisites](#prerequisites)
+- [Installation and Execution](#installation-and-execution)
+- [API Endpoints](#api-endpoints)
+- [Roles and Permissions](#roles-and-permissions)
+- [Metrics and Observability](#metrics-and-observability)
 - [Testing](#testing)
-- [Documentación Técnica](#documentación-técnica)
+- [Technical Documentation](#technical-documentation)
 
 ---
 
-## 🎯 Descripción
+## 🎯 Description
 
-CoopCredit es una cooperativa de ahorro y crédito que requiere digitalizar su proceso de solicitud y evaluación de créditos. Este sistema proporciona:
+CoopCredit is a savings and credit cooperative that requires digitalization of its credit application and evaluation process. This system provides:
 
-- **Gestión de Afiliados**: Registro y administración de miembros
-- **Solicitudes de Crédito**: Creación y seguimiento de solicitudes
-- **Evaluación Automática**: Integración con servicio externo de scoring
-- **Seguridad Robusta**: Autenticación JWT y autorización por roles
-- **Observabilidad**: Métricas de negocio y técnicas con Prometheus
-- **Alta Disponibilidad**: Arquitectura de microservicios con Docker
+- **Affiliate Management**: Member registration and administration
+- **Credit Applications**: Application creation and tracking
+- **Automated Evaluation**: Integration with external scoring service
+- **Robust Security**: JWT authentication and role-based authorization
+- **Observability**: Business and technical metrics with Prometheus
+- **High Availability**: Microservices architecture with Docker
 
 ---
 
-## 🏗️ Arquitectura
+## 🏗️ Architecture
 
-### Arquitectura Hexagonal (Ports & Adapters)
+### Hexagonal Architecture (Ports & Adapters)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -109,13 +109,13 @@ CoopCredit es una cooperativa de ahorro y crédito que requiere digitalizar su p
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Diagrama de Microservicios
+### Microservices Diagram
 
 ```
 ┌──────────────┐         ┌─────────────────────┐         ┌──────────────────┐
 │              │         │  Credit Application │         │                  │
-│   Cliente    │◄───────▶│      Service        │◄───────▶│   PostgreSQL     │
-│  (Postman)   │   HTTP  │   (Puerto 8080)     │  JDBC   │   (Puerto 5432)  │
+│   Client     │◄───────▶│      Service        │◄───────▶│   PostgreSQL     │
+│  (Postman)   │   HTTP  │   (Port 8080)       │  JDBC   │   (Port 5432)    │
 │              │         │                     │         │                  │
 └──────────────┘         └──────────┬──────────┘         └──────────────────┘
                                     │
@@ -124,147 +124,134 @@ CoopCredit es una cooperativa de ahorro y crédito que requiere digitalizar su p
                          ┌──────────▼──────────┐
                          │  Risk Central       │
                          │  Mock Service       │
-                         │  (Puerto 8081)      │
+                         │  (Port 8081)        │
                          └─────────────────────┘
 ```
 
 ---
 
-## 🛠️ Tecnologías
+## 🛠️ Technologies
 
 ### Backend Framework
-- **Java 17** - LTS version con records y pattern matching
-- **Spring Boot 3.2.0** - Framework empresarial
-- **Spring Security 6** - Autenticación y autorización
-- **Spring Data JPA** - Persistencia con Hibernate
-- **Flyway** - Migraciones de base de datos
+- **Java 17** - LTS version with records and pattern matching
+- **Spring Boot 3.2.0** - Enterprise framework
+- **Spring Security 6** - Authentication and authorization
+- **Spring Data JPA** - Persistence with Hibernate
+- **Flyway** - Database migrations
 
-### Seguridad
-- **JWT (jjwt 0.12.3)** - Tokens stateless con HS256
-- **BCrypt** - Hashing de contraseñas
+### Security
+- **JWT (jjwt 0.12.3)** - Stateless tokens with HS256
+- **BCrypt** - Password hashing
 
-### Persistencia
-- **PostgreSQL 15** - Base de datos relacional
-- **Hibernate 6** - ORM con optimizaciones (EntityGraph, batch-size)
+### Persistence
+- **PostgreSQL 15** - Relational database
+- **Hibernate 6** - ORM with optimizations (EntityGraph, batch-size)
 - **HikariCP** - Connection pooling
 
-### Observabilidad
-- **Spring Boot Actuator** - Health checks y métricas
-- **Micrometer** - Métricas personalizadas
-- **Prometheus** - Exportación de métricas (opcional)
-- **Logback** - Logging estructurado JSON
+### Observability
+- **Spring Boot Actuator** - Health checks and metrics
+- **Micrometer** - Custom metrics
+- **Prometheus** - Metrics export (optional)
+- **Logback** - Structured JSON logging
 
 ### Testing
-- **JUnit 5** - Framework de testing
-- **Mockito** - Mocking de dependencias
-- **MockMvc** - Testing de APIs REST
-- **Testcontainers** - PostgreSQL en contenedor para tests
-- **H2** - Base de datos en memoria para tests rápidos
+- **JUnit 5** - Testing framework
+- **Mockito** - Dependency mocking
+- **MockMvc** - REST API testing
+- **Testcontainers** - PostgreSQL in container for tests
+- **H2** - In-memory database for fast tests
 
 ### DevOps
-- **Docker** - Containerización
-- **Docker Compose** - Orquestación de servicios
-- **Maven** - Gestión de dependencias y build
+- **Docker** - Containerization
+- **Docker Compose** - Service orchestration
+- **Maven** - Dependency and build management
 
 ---
 
-## 📦 Requisitos Previos
+## 📦 Prerequisites
 
 - **Java 17+** (JDK)
 - **Maven 3.8+**
-- **Docker 20+** y Docker Compose
-- **PostgreSQL 15** (si ejecutas sin Docker)
+- **Docker 20+** and Docker Compose
+- **PostgreSQL 15** (if running without Docker)
 - **Git**
+- **Node.js** (optional, for frontend development)
 
 ---
 
-## 🚀 Instalación y Ejecución
+## 🚀 Installation and Execution
 
-### Opción 1: Con Docker (Recomendado)
+### 🎯 Quick Start
 
 ```bash
-# 1. Clonar repositorio
-git clone <repository-url>
+# 1. Clone repository
+git clone https://github.com/EmmanuelRendon01/CoopCredit.git
 cd CoopCredit
 
-# 2. Construir servicios
-docker-compose build
-
-# 3. Iniciar todos los servicios
+# 2. Start all backend services
 docker-compose up -d
 
-# 4. Verificar estado
-docker-compose ps
+# 3. Start frontend (in new terminal)
+cd CoopCreditFront
+sudo docker build -t coopcredit-frontend .
+sudo docker run -d -p 3001:3001 --name coopcredit-frontend coopcredit-frontend
 
-# 5. Ver logs
-docker-compose logs -f credit-application-service
+# 4. Access the application
+# Frontend: http://localhost:3001
+# Backend: http://localhost:8080
 ```
 
-**Servicios disponibles:**
-- Credit Application Service: http://localhost:8080
-- Risk Central Service: http://localhost:8081
-- PostgreSQL: localhost:5432
+### 📚 Complete Deployment Guide
 
-### Opción 2: Ejecución Local (Sin Docker)
+For detailed step-by-step instructions, multiple deployment options, and troubleshooting, see:
 
-```bash
-# 1. Iniciar PostgreSQL
-# Asegúrate de tener PostgreSQL corriendo en puerto 5432
+**[📖 DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)** - Complete deployment and execution guide
 
-# 2. Crear base de datos
-createdb coopcredit
+This guide covers:
+- ✅ Full stack deployment with Docker
+- ✅ Backend-only deployment
+- ✅ Local development setup
+- ✅ Frontend deployment options
+- ✅ Verification steps
+- ✅ Troubleshooting common issues
+- ✅ Production deployment recommendations
 
-# 3. Compilar Risk Central Service
-cd risk-central-service
-mvn clean package
-java -jar target/*.jar &
-cd ..
+### Services and Ports
 
-# 4. Compilar Credit Application Service
-cd credit-application-service
-mvn clean package
-java -jar target/*.jar
-```
+| Service | Port | URL |
+|---------|------|-----|
+| **Frontend** | 3001 | http://localhost:3001 |
+| **Backend API** | 8080 | http://localhost:8080 |
+| **Risk Service** | 8081 | http://localhost:8081 |
+| **PostgreSQL** | 5432 | localhost:5432 |
 
-### Verificar Instalación
+### Test Users
 
-```bash
-# Health Check - Credit Application Service
-curl http://localhost:8080/actuator/health
-
-# Health Check - Risk Central Service
-curl http://localhost:8081/actuator/health
-
-# Respuesta esperada:
-{
-  "status": "UP",
-  "components": {
-    "db": { "status": "UP" },
-    "diskSpace": { "status": "UP" },
-    "ping": { "status": "UP" }
-  }
-}
-```
+| Username | Password | Role |
+|----------|----------|------|
+| `admin` | `admin123` | ADMIN |
+| `analyst` | `analyst123` | ANALYST |
+| `affiliate1` | `affiliate123` | AFFILIATE |
 
 ---
 
-## 📡 Endpoints API
+## 📡 API Endpoints
 
-### 🔐 Autenticación
+### 🔐 Authentication
 
 #### POST /api/auth/register
-Registra un nuevo afiliado con usuario.
+Registers a new affiliate with user credentials.
 
 **Request:**
 ```json
 {
-  "username": "juan.perez",
+  "username": "john.doe",
   "password": "Secure123",
-  "email": "juan.perez@example.com",
+  "email": "john.doe@example.com",
   "documentType": "CC",
   "documentNumber": "1234567890",
-  "firstName": "Juan",
-  "lastName": "Pérez",
+  "firstName": "John",
+  "lastName": "Doe",
   "phone": "3001234567",
   "salary": 5000000
 }
@@ -274,19 +261,19 @@ Registra un nuevo afiliado con usuario.
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "username": "juan.perez",
-  "email": "juan.perez@example.com",
+  "username": "john.doe",
+  "email": "john.doe@example.com",
   "roles": ["AFFILIATE"]
 }
 ```
 
 #### POST /api/auth/login
-Autentica usuario y genera token JWT.
+Authenticates user and generates JWT token.
 
 **Request:**
 ```json
 {
-  "username": "juan.perez",
+  "username": "john.doe",
   "password": "Secure123"
 }
 ```
@@ -295,16 +282,16 @@ Autentica usuario y genera token JWT.
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "username": "juan.perez",
-  "email": "juan.perez@example.com",
+  "username": "john.doe",
+  "email": "john.doe@example.com",
   "roles": ["AFFILIATE"]
 }
 ```
 
-### 💳 Solicitudes de Crédito
+### 💳 Credit Applications
 
 #### POST /api/credit-applications/affiliates/{affiliateId}
-Crea una nueva solicitud de crédito.
+Creates a new credit application.
 
 **Headers:**
 ```
@@ -320,7 +307,7 @@ Content-Type: application/json
   "interestRate": 1.5,
   "monthlyIncome": 5000000,
   "currentDebt": 500000,
-  "purpose": "Compra de vehículo"
+  "purpose": "Vehicle purchase"
 }
 ```
 
@@ -329,27 +316,27 @@ Content-Type: application/json
 {
   "id": 1,
   "affiliateId": 1,
-  "affiliateName": "Juan Pérez",
+  "affiliateName": "John Doe",
   "requestedAmount": 10000000,
   "termMonths": 24,
   "interestRate": 1.5,
   "monthlyPayment": 416666.67,
   "status": "PENDING",
-  "purpose": "Compra de vehículo",
+  "purpose": "Vehicle purchase",
   "applicationDate": "2025-12-09T10:30:00"
 }
 ```
 
-**Validaciones:**
-- Monto: $1,000,000 - $50,000,000
-- Plazo: 6-60 meses
-- Ratio deuda/ingreso ≤ 50%
-- Afiliación mínima: 6 meses
-- Monto máximo: 5x salario mensual
-- Sin solicitudes pendientes
+**Validations:**
+- Amount: $1,000,000 - $50,000,000
+- Term: 6-60 months
+- Debt-to-income ratio ≤ 50%
+- Minimum membership: 6 months
+- Maximum amount: 5x monthly salary
+- No pending applications
 
 #### POST /api/credit-applications/{applicationId}/evaluate
-Evalúa una solicitud con el servicio de riesgo (Solo ANALYST).
+Evaluates an application with the risk service (ANALYST only).
 
 **Headers:**
 ```
@@ -368,13 +355,13 @@ Authorization: Bearer {analyst-token}
 }
 ```
 
-**Estados posibles:**
+**Possible statuses:**
 - `APPROVED` - Score ≥ 700
 - `REJECTED` - Score < 300
-- `UNDER_REVIEW` - Score 300-699 (requiere revisión manual)
+- `UNDER_REVIEW` - Score 300-699 (requires manual review)
 
 #### GET /api/credit-applications/affiliates/{affiliateId}
-Obtiene todas las solicitudes de un afiliado.
+Gets all applications for an affiliate.
 
 **Headers:**
 ```
@@ -400,54 +387,54 @@ Authorization: Bearer {token}
 ]
 ```
 
-### 📊 Observabilidad
+### 📊 Observability
 
 #### GET /actuator/health
-Estado de la aplicación y dependencias.
+Application and dependencies health status.
 
 #### GET /actuator/metrics
-Lista de métricas disponibles.
+List of available metrics.
 
 #### GET /actuator/metrics/{metric-name}
-Detalle de métrica específica.
+Detail of specific metric.
 
-**Ejemplos:**
+**Examples:**
 ```bash
-# Fallos de autenticación
+# Authentication failures
 curl http://localhost:8080/actuator/metrics/authentication.failures
 
-# Solicitudes creadas
+# Applications created
 curl http://localhost:8080/actuator/metrics/credit.applications.created
 
-# Tiempos de endpoints
+# Endpoint execution time
 curl http://localhost:8080/actuator/metrics/endpoint.execution.time
 ```
 
 #### GET /actuator/prometheus
-Métricas en formato Prometheus.
+Metrics in Prometheus format.
 
 ---
 
-## 👥 Roles y Permisos
+## 👥 Roles and Permissions
 
-| Rol | Descripción | Permisos |
+| Role | Description | Permissions |
 |-----|-------------|----------|
-| **AFFILIATE** | Afiliado de la cooperativa | • Ver sus propias solicitudes<br>• Crear nuevas solicitudes<br>• Consultar su historial |
-| **ANALYST** | Analista de crédito | • Ver todas las solicitudes<br>• Evaluar solicitudes pendientes<br>• Aprobar/rechazar créditos |
-| **ADMIN** | Administrador del sistema | • Acceso total a todos los recursos<br>• Gestión de usuarios<br>• Configuración del sistema |
+| **AFFILIATE** | Cooperative member | • View own applications<br>• Create new applications<br>• Check own history |
+| **ANALYST** | Credit analyst | • View all applications<br>• Evaluate pending applications<br>• Approve/reject credits |
+| **ADMIN** | System administrator | • Full access to all resources<br>• User management<br>• System configuration |
 
-### Flujo de Autorización
+### Authorization Flow
 
 ```
 ┌─────────────┐    Register    ┌──────────────┐
-│   Usuario   │───────────────▶│  AFFILIATE   │
+│    User     │───────────────▶│  AFFILIATE   │
 │             │                 │   (default)  │
 └─────────────┘                 └──────────────┘
                                        │
-                                       │ Crear Solicitud
+                                       │ Create Application
                                        ▼
 ┌──────────────┐                ┌──────────────┐
-│   ANALYST    │──── Evaluar ──▶│  PENDING     │
+│   ANALYST    │──── Evaluate ──▶│  PENDING     │
 │              │                 │ Application  │
 └──────────────┘                 └──────────────┘
        │                                │
@@ -459,53 +446,53 @@ Métricas en formato Prometheus.
 └──────────────┘                └──────────────┘
 ```
 
-### Usuarios de Prueba (creados por V3 migration)
+### Test Users (created by V3 migration)
 
-| Username | Password | Rol | Descripción |
+| Username | Password | Role | Description |
 |----------|----------|-----|-------------|
-| `admin` | `admin123` | ADMIN | Administrador del sistema |
-| `analyst` | `analyst123` | ANALYST | Analista de crédito |
-| `affiliate1` | `affiliate123` | AFFILIATE | Afiliado ejemplo |
+| `admin` | `admin123` | ADMIN | System administrator |
+| `analyst` | `analyst123` | ANALYST | Credit analyst |
+| `affiliate1` | `affiliate123` | AFFILIATE | Sample affiliate |
 
 ---
 
-## 📈 Métricas y Observabilidad
+## 📈 Metrics and Observability
 
-### Métricas de Negocio
+### Business Metrics
 
-| Métrica | Tipo | Descripción |
+| Metric | Type | Description |
 |---------|------|-------------|
-| `credit.applications.created` | Counter | Total de solicitudes creadas |
-| `credit.applications.approved` | Counter | Total de solicitudes aprobadas |
-| `credit.applications.rejected` | Counter | Total de solicitudes rechazadas |
+| `credit.applications.created` | Counter | Total applications created |
+| `credit.applications.approved` | Counter | Total applications approved |
+| `credit.applications.rejected` | Counter | Total applications rejected |
 
-### Métricas Técnicas
+### Technical Metrics
 
-| Métrica | Tipo | Descripción |
+| Metric | Type | Description |
 |---------|------|-------------|
-| `endpoint.execution.time` | Timer | Tiempo de ejecución por endpoint |
-| `authentication.failures` | Counter | Intentos fallidos de autenticación |
-| `business.errors` | Counter | Violaciones de reglas de negocio |
-| `validation.errors` | Counter | Errores de validación de DTOs |
+| `endpoint.execution.time` | Timer | Execution time per endpoint |
+| `authentication.failures` | Counter | Failed authentication attempts |
+| `business.errors` | Counter | Business rule violations |
+| `validation.errors` | Counter | DTO validation errors |
 
-### Métricas Automáticas (Spring Boot)
+### Automatic Metrics (Spring Boot)
 
-- `http.server.requests` - Peticiones HTTP (latencia, status codes)
-- `jvm.memory.used` - Uso de memoria JVM
-- `hikaricp.connections.active` - Conexiones DB activas
-- `process.cpu.usage` - Uso de CPU
+- `http.server.requests` - HTTP requests (latency, status codes)
+- `jvm.memory.used` - JVM memory usage
+- `hikaricp.connections.active` - Active DB connections
+- `process.cpu.usage` - CPU usage
 
-### Dashboard Ejemplo
+### Example Dashboard
 
 ```bash
-# Tasa de aprobación
+# Approval rate
 curl http://localhost:8080/actuator/metrics/credit.applications.approved
-# Dividir entre credit.applications.created
+# Divide by credit.applications.created
 
-# Latencia P95 de evaluación
+# P95 evaluation latency
 curl "http://localhost:8080/actuator/metrics/endpoint.execution.time?tag=endpoint:evaluate-application"
 
-# Intentos de login fallidos (últimos 5 min)
+# Failed login attempts (last 5 min)
 curl http://localhost:8080/actuator/metrics/authentication.failures
 ```
 
@@ -513,128 +500,128 @@ curl http://localhost:8080/actuator/metrics/authentication.failures
 
 ## 🧪 Testing
 
-### Ejecutar Tests
+### Run Tests
 
 ```bash
-# Todos los tests
+# All tests
 mvn test
 
-# Solo tests unitarios
+# Unit tests only
 mvn test -Dtest="*Test"
 
-# Solo tests de integración
+# Integration tests only
 mvn test -Dtest="*IntegrationTest"
 
-# Con Testcontainers
+# With Testcontainers
 mvn test -Dtest="*TestcontainersTest"
 
-# Con reporte de cobertura
+# With coverage report
 mvn clean verify
-# Ver reporte en: target/site/jacoco/index.html
+# View report at: target/site/jacoco/index.html
 ```
 
-### Cobertura de Tests
+### Test Coverage
 
-- **Tests Unitarios (Domain):** 
-  - `AffiliateTest` - Lógica de límites de crédito
-  - `CreditApplicationTest` - Cálculo de cuota y ratio deuda
-  - `BusinessValidatorTest` - Validaciones de negocio
+- **Unit Tests (Domain):** 
+  - `AffiliateTest` - Credit limit logic
+  - `CreditApplicationTest` - Payment and debt ratio calculation
+  - `BusinessValidatorTest` - Business validations
 
-- **Tests Unitarios (Use Cases):**
-  - `RegisterCreditApplicationUseCaseTest` - Mock de repositorios
-  - `EvaluateCreditApplicationUseCaseTest` - Mock de RiskEvaluationPort
+- **Unit Tests (Use Cases):**
+  - `RegisterCreditApplicationUseCaseTest` - Repository mocking
+  - `EvaluateCreditApplicationUseCaseTest` - RiskEvaluationPort mocking
 
-- **Tests de Integración:**
-  - `AuthControllerIntegrationTest` - Flujo completo con MockMvc
-  - `AffiliateRepositoryAdapterTestcontainersTest` - PostgreSQL en contenedor
+- **Integration Tests:**
+  - `AuthControllerIntegrationTest` - Complete flow with MockMvc
+  - `AffiliateRepositoryAdapterTestcontainersTest` - PostgreSQL in container
 
-### Ejemplo de Ejecución
+### Example Execution
 
 ```bash
 cd credit-application-service
 
-# Tests unitarios rápidos
+# Fast unit tests
 mvn test -Dspring.profiles.active=test
 
-# Tests con Testcontainers (requiere Docker)
+# Tests with Testcontainers (requires Docker)
 mvn verify
 ```
 
 ---
 
-## 📚 Documentación Técnica
+## 📚 Technical Documentation
 
-### Documentos de Diseño
+### Design Documents
 
 - **[FASE-1-ANALISIS-Y-DISENO.md](FASE-1-ANALISIS-Y-DISENO.md)** 
-  - Arquitectura hexagonal
-  - Diagramas de casos de uso
-  - Identificación de puertos y adaptadores
-  - Modelos de dominio
+  - Hexagonal architecture
+  - Use case diagrams
+  - Ports and adapters identification
+  - Domain models
 
 - **[FASE-2-PERSISTENCIA-AVANZADA.md](FASE-2-PERSISTENCIA-AVANZADA.md)**
-  - Entidades JPA con relaciones
-  - Migraciones Flyway
-  - Optimizaciones (EntityGraph, batch-size)
-  - Repositorios y adaptadores
+  - JPA entities with relationships
+  - Flyway migrations
+  - Optimizations (EntityGraph, batch-size)
+  - Repositories and adapters
 
 - **[FASE-3-SEGURIDAD-Y-VALIDACIONES.md](FASE-3-SEGURIDAD-Y-VALIDACIONES.md)**
-  - Implementación JWT
+  - JWT implementation
   - Spring Security configuration
-  - Validaciones de negocio
-  - Manejo de errores RFC 7807
-  - Logging estructurado
+  - Business validations
+  - RFC 7807 error handling
+  - Structured logging
 
 - **[FASE-4-MICROSERVICIOS-Y-OBSERVABILIDAD.md](FASE-4-MICROSERVICIOS-Y-OBSERVABILIDAD.md)**
-  - Risk Central Service con hash-based scoring
-  - Integración REST entre servicios
-  - Métricas obligatorias
-  - Actuator y Prometheus
+  - Risk Central Service with hash-based scoring
+  - REST integration between services
+  - Required metrics
+  - Actuator and Prometheus
 
-### Scripts y Comandos
+### Scripts and Commands
 
-- **[DOCKER-COMMANDS.md](DOCKER-COMMANDS.md)** - Comandos Docker útiles
+- **[DOCKER-COMMANDS.md](DOCKER-COMMANDS.md)** - Useful Docker commands
 
-### Migraciones de Base de Datos
+### Database Migrations
 
 ```
 src/main/resources/db/migration/
-├── V1__create_schema.sql           # Tablas, constraints, indexes
+├── V1__create_schema.sql           # Tables, constraints, indexes
 ├── V2__create_relationships.sql    # Foreign keys, cascades
-└── V3__insert_initial_data.sql     # Roles, usuarios de prueba
+└── V3__insert_initial_data.sql     # Roles, test users
 ```
 
 ---
 
-## 🔒 Seguridad
+## 🔒 Security
 
-### Configuración JWT
+### JWT Configuration
 
 ```properties
 jwt.secret=CoopCreditSecretKeyForJWT2024MustBeLongEnoughForHS256Algorithm
-jwt.expiration=86400000  # 24 horas
+jwt.expiration=86400000  # 24 hours
 ```
 
-**Recomendaciones para producción:**
-- Usar variables de entorno para el secret
-- Rotar secrets periódicamente
-- Implementar refresh tokens
-- Configurar HTTPS obligatorio
+**Production recommendations:**
+- Use environment variables for the secret
+- Rotate secrets periodically
+- Implement refresh tokens
+- Configure mandatory HTTPS
 
-### Endpoints Públicos
+### Public Endpoints
 
 - `POST /api/auth/register`
 - `POST /api/auth/login`
 - `GET /actuator/health`
 
-Todos los demás requieren autenticación JWT.
+All others require JWT authentication.
 
-### Ejemplo de Petición Autenticada
+### Authenticated Request Example
 
 ```bash
 TOKEN=$(curl -s -X POST http://localhost:8080/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"username":"juan.perez","password":"Secure123"}' \
+  -d '{"username":"john.doe","password":"Secure123"}' \
   | jq -r '.token')
 
 curl -H "Authorization: Bearer $TOKEN" \
@@ -645,43 +632,43 @@ curl -H "Authorization: Bearer $TOKEN" \
 
 ## 🐳 Docker
 
-### Estructura de Contenedores
+### Container Structure
 
 ```yaml
 services:
-  postgres:          # Base de datos
-    - Puerto: 5432
-    - Volumen persistente
+  postgres:          # Database
+    - Port: 5432
+    - Persistent volume
     
   risk-central-service:
-    - Puerto: 8081
-    - Health check cada 30s
+    - Port: 8081
+    - Health check every 30s
     
   credit-application-service:
-    - Puerto: 8080
-    - Depende de: postgres, risk-central-service
-    - Health check cada 30s
+    - Port: 8080
+    - Depends on: postgres, risk-central-service
+    - Health check every 30s
 ```
 
-### Comandos Útiles
+### Useful Commands
 
 ```bash
-# Reconstruir sin caché
+# Rebuild without cache
 docker-compose build --no-cache
 
-# Escalar servicios
+# Scale services
 docker-compose up -d --scale credit-application-service=2
 
-# Ver recursos
+# View resources
 docker stats
 
-# Limpiar todo
+# Clean everything
 docker-compose down -v --rmi all
 
-# Acceder a contenedor
+# Access container
 docker exec -it credit-application-service sh
 
-# Ver logs en tiempo real
+# View logs in real time
 docker-compose logs -f --tail=100
 ```
 
@@ -689,54 +676,54 @@ docker-compose logs -f --tail=100
 
 ## 🚧 Troubleshooting
 
-### Error: Puerto ya en uso
+### Error: Port already in use
 
 ```bash
-# Verificar qué usa el puerto
+# Check what's using the port
 netstat -ano | findstr :8080
 
-# Detener servicios Docker
+# Stop Docker services
 docker-compose down
 ```
 
-### Error: Base de datos no conecta
+### Error: Database doesn't connect
 
 ```bash
-# Verificar estado de PostgreSQL
+# Check PostgreSQL status
 docker-compose ps postgres
 
-# Ver logs
+# View logs
 docker-compose logs postgres
 
-# Reiniciar solo PostgreSQL
+# Restart PostgreSQL only
 docker-compose restart postgres
 ```
 
-### Error: Tests fallan con Testcontainers
+### Error: Tests fail with Testcontainers
 
 ```bash
-# Verificar Docker está corriendo
+# Verify Docker is running
 docker info
 
-# Limpiar contenedores de test
+# Clean test containers
 docker rm -f $(docker ps -a -q --filter "label=org.testcontainers")
 ```
 
 ---
 
-## 🎯 Colección Postman
+## 🎯 Postman Collection
 
-### Importar Colección
+### Import Collection
 
-1. Abrir Postman
+1. Open Postman
 2. Import → Raw text
-3. Pegar el JSON siguiente:
+3. Paste the following JSON:
 
 ```json
 {
   "info": {
     "name": "CoopCredit API",
-    "description": "Colección completa de endpoints de CoopCredit",
+    "description": "Complete collection of CoopCredit endpoints",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -772,7 +759,7 @@ docker rm -f $(docker ps -a -q --filter "label=org.testcontainers")
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"juan.perez\",\n  \"password\": \"Secure123\",\n  \"email\": \"juan.perez@example.com\",\n  \"documentType\": \"CC\",\n  \"documentNumber\": \"1234567890\",\n  \"firstName\": \"Juan\",\n  \"lastName\": \"Pérez\",\n  \"phone\": \"3001234567\",\n  \"salary\": 5000000\n}",
+              "raw": "{\n  \"username\": \"john.doe\",\n  \"password\": \"Secure123\",\n  \"email\": \"john.doe@example.com\",\n  \"documentType\": \"CC\",\n  \"documentNumber\": \"1234567890\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"phone\": \"3001234567\",\n  \"salary\": 5000000\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -805,7 +792,7 @@ docker rm -f $(docker ps -a -q --filter "label=org.testcontainers")
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"juan.perez\",\n  \"password\": \"Secure123\"\n}",
+              "raw": "{\n  \"username\": \"john.doe\",\n  \"password\": \"Secure123\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -836,7 +823,7 @@ docker rm -f $(docker ps -a -q --filter "label=org.testcontainers")
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"requestedAmount\": 10000000,\n  \"termMonths\": 24,\n  \"interestRate\": 1.5,\n  \"monthlyIncome\": 5000000,\n  \"currentDebt\": 500000,\n  \"purpose\": \"Compra de vehículo\"\n}",
+              "raw": "{\n  \"requestedAmount\": 10000000,\n  \"termMonths\": 24,\n  \"interestRate\": 1.5,\n  \"monthlyIncome\": 5000000,\n  \"currentDebt\": 500000,\n  \"purpose\": \"Vehicle purchase\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -928,70 +915,70 @@ docker rm -f $(docker ps -a -q --filter "label=org.testcontainers")
 }
 ```
 
-### Flujo de Prueba Recomendado
+### Recommended Test Flow
 
-1. **Register** → Guarda el token automáticamente
-2. **Create Application** → Crea solicitud con el token
-3. **Login como ANALYST** (username: `analyst`, password: `analyst123`)
-4. **Evaluate Application** → Evalúa la solicitud creada
-5. **Get Applications** → Verifica el resultado
-
----
-
-## 📞 Soporte y Contribución
-
-### Reportar Bugs
-
-Crea un issue en GitHub con:
-1. Descripción del problema
-2. Pasos para reproducir
-3. Logs relevantes
-4. Versión de Java y Docker
-
-### Contribuir
-
-1. Fork del repositorio
-2. Crear branch (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit cambios (`git commit -am 'Agregar funcionalidad'`)
-4. Push al branch (`git push origin feature/nueva-funcionalidad`)
-5. Crear Pull Request
+1. **Register** → Automatically saves the token
+2. **Create Application** → Creates application with token
+3. **Login as ANALYST** (username: `analyst`, password: `analyst123`)
+4. **Evaluate Application** → Evaluates the created application
+5. **Get Applications** → Verify the result
 
 ---
 
-## 📄 Licencia
+## 📞 Support and Contribution
 
-Este proyecto es privado y confidencial. Todos los derechos reservados.
+### Report Bugs
+
+Create an issue on GitHub with:
+1. Problem description
+2. Steps to reproduce
+3. Relevant logs
+4. Java and Docker version
+
+### Contributing
+
+1. Fork the repository
+2. Create branch (`git checkout -b feature/new-feature`)
+3. Commit changes (`git commit -am 'Add feature'`)
+4. Push to branch (`git push origin feature/new-feature`)
+5. Create Pull Request
 
 ---
 
-## 👨‍💻 Autor
+## 📄 License
+
+This project is private and confidential. All rights reserved.
+
+---
+
+## 👨‍💻 Author
 
 **CoopCredit Development Team**
 
-Para sustentación técnica y consultas, contactar al equipo de desarrollo.
+For technical support and inquiries, contact the development team.
 
 ---
 
-## 🎯 Checklist de Implementación
+## 🎯 Implementation Checklist
 
-- [x] Arquitectura Hexagonal
-- [x] Microservicios (Credit Application + Risk Central)
-- [x] Seguridad JWT stateless
-- [x] Persistencia JPA con optimizaciones
-- [x] Migraciones Flyway
-- [x] Manejo de errores RFC 7807
-- [x] Logging estructurado
-- [x] Métricas de negocio y técnicas
+- [x] Hexagonal Architecture
+- [x] Microservices (Credit Application + Risk Central)
+- [x] Stateless JWT Security
+- [x] JPA Persistence with optimizations
+- [x] Flyway Migrations
+- [x] RFC 7807 Error Handling
+- [x] Structured Logging
+- [x] Business and Technical Metrics
 - [x] Actuator + Prometheus
-- [x] Pruebas unitarias
-- [x] Pruebas de integración
+- [x] Unit Tests
+- [x] Integration Tests
 - [x] Testcontainers
-- [x] Docker multi-stage
-- [x] docker-compose completo
-- [x] Documentación profesional
+- [x] Multi-stage Docker
+- [x] Complete docker-compose
+- [x] Professional Documentation
 
 ---
 
-**Versión:** 1.0.0  
-**Fecha:** Diciembre 9, 2025  
-**Estado:** ✅ Producción Ready
+**Version:** 1.0.0  
+**Date:** December 9, 2025  
+**Status:** ✅ Production Ready
