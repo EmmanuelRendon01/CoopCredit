@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoopCredit - Iniciar Sesión</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body
+    class="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 min-h-screen flex items-center justify-center font-sans">
+
+    <!-- Background Animation -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute w-96 h-96 bg-blue-500/10 rounded-full blur-3xl -top-48 -left-48 animate-pulse"></div>
+        <div
+            class="absolute w-96 h-96 bg-purple-500/10 rounded-full blur-3xl -bottom-48 -right-48 animate-pulse delay-1000">
+        </div>
+    </div>
+
+    <!-- Login Card -->
+    <div class="relative z-10 w-full max-w-md mx-4">
+
+        <!-- Logo/Header -->
+        <div class="text-center mb-8">
+            <div
+                class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl mb-4 shadow-lg shadow-blue-500/50">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                    </path>
+                </svg>
+            </div>
+            <h1 class="text-3xl font-bold text-white mb-2">CoopCredit</h1>
+            <p class="text-blue-200">Sistema de Gestión de Créditos</p>
+        </div>
+
+        <!-- Login Form Card -->
+        <div class="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20">
+            <h2 class="text-2xl font-bold text-white mb-6">Iniciar Sesión</h2>
+
+            <!-- Alert Message (hidden by default) -->
+            <div id="alert" class="hidden mb-4 p-4 rounded-xl text-sm font-medium"></div>
+
+            <form id="loginForm" class="space-y-5">
+                <!-- Username -->
+                <div>
+                    <label for="username" class="block text-sm font-medium text-blue-100 mb-2">
+                        Usuario
+                    </label>
+                    <input type="text" id="username" name="username" required
+                        class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-blue-200/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                        placeholder="Ingresa tu usuario">
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-blue-100 mb-2">
+                        Contraseña
+                    </label>
+                    <input type="password" id="password" name="password" required
+                        class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-blue-200/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                        placeholder="••••••••">
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="loginBtn"
+                    class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-blue-500/50 hover:shadow-blue-600/50 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]">
+                    Iniciar Sesión
+                </button>
+            </form>
+
+            <!-- Divider -->
+            <div class="relative my-6">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-white/20"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-4 bg-transparent text-blue-200">¿No tienes cuenta?</span>
+                </div>
+            </div>
+
+            <!-- Register Link -->
+            <a href="pages/register.html"
+                class="block w-full text-center bg-white/5 hover:bg-white/10 border border-white/20 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]">
+                Crear Cuenta
+            </a>
+
+            <!-- Test Users Info -->
+            <div class="mt-6 p-4 bg-blue-500/10 border border-blue-400/20 rounded-xl">
+                <p class="text-xs text-blue-200 mb-2 font-semibold">Usuarios de prueba:</p>
+                <div class="text-xs text-blue-300 space-y-1">
+                    <p>👤 <span class="font-mono">admin</span> / <span class="font-mono">admin123</span></p>
+                    <p>👤 <span class="font-mono">analyst</span> / <span class="font-mono">analyst123</span></p>
+                    <p>👤 <span class="font-mono">affiliate1</span> / <span class="font-mono">affiliate123</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <p class="text-center text-blue-200/60 text-sm mt-6">
+            © 2024 CoopCredit. Todos los derechos reservados.
+        </p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/login.js"></script>
+</body>
+
+</html>
